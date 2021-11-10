@@ -9,4 +9,4 @@ class ArticleAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'article', 'author_name', 'comment_text')
