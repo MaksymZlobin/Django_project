@@ -10,8 +10,8 @@ class Article(models.Model):
     date = models.DateTimeField(blank=True, null=True)
     # author = models.ForeignKey('User', on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.title
+    # def __str__(self):
+    #     return self.title
 
     def published(self):
         self.date = timezone.now()
