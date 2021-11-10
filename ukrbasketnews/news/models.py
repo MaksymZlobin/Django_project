@@ -17,19 +17,11 @@ class Article(models.Model):
         self.date = timezone.now()
         self.save()
 
-    class Meta:
-        verbose_name = 'Стаття'
-        verbose_name_plural = 'Статті'
-
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    author_name = models.CharField('імʼя автора', max_length=50)
-    comment_text = models.CharField('текст коментаря', max_length=200)
+    author_name = models.CharField(max_length=50)
+    comment_text = models.CharField(max_length=200)
 
     def __str__(self):
         return self.author_name
-
-    class Meta:
-        verbose_name = 'Коментар'
-        verbose_name_plural = 'Коментарі'

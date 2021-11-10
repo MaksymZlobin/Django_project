@@ -7,7 +7,6 @@ class ArticleAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'text', 'date')
 
 
-
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     pass
