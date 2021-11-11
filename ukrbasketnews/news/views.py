@@ -9,8 +9,8 @@ def index(request):
 
 
 def articles_list(request):
-    articles_list = Article.objects.order_by('date')[:5]
-    template = loader.get_template('news/index.html')
+    articles_list = Article.objects.order_by('-date')[:5]
+    template = loader.get_template('news/list.html')
     context = {
         'articles_list': articles_list,
     }
@@ -21,7 +21,7 @@ def article_detail(request, id):
     try:
         article = Article.objects.get(id=id)
     except Article.DoesNotExist:
-        return HttpResponse('Such article does not exist')
-    return HttpResponse(f'You are looking at the #{article} article')
+        return HttpResponse('Such article does not exist!')
+    return render(request, 'news/detail.html', {'article': article})
 
 
