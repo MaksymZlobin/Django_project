@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.template import loader
 from news.models import Article
-
 
 
 def index(request):
@@ -9,7 +9,12 @@ def index(request):
 
 
 def articles_list(request):
-    return HttpResponse('You are looking for articles.')
+    articles_list = Article.objects.order_by('date')[:5]
+    template = loader.get_template('news/index.html')
+    context = {
+        'articles_list': articles_list,
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def article_detail(request, id):
