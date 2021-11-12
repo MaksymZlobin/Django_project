@@ -10,4 +10,32 @@
 
 <em>{{article.date}}</em>
 
+<hr>
+
+{% if latest_comments %}
+
+    {% for c in latest_comments %}
+        <p>
+            <strong>{{c.author_name}}</strong>
+            <p>{{c.comment_text}}</p>
+        </p>
+    {% endfor %}
+
+{% else %}
+Comments not found!
+{% endif %}
+
+<hr>
+
+<form action="{% url 'articles:leave_comment' article.id %}" method="POST">
+
+    {% csrf_token %}
+
+    <input type="text" required placeholder="Name" name="name"><br>
+    <textarea name="text" required="" placeholder="Comment text" cols="30" rows="10"></textarea><br>
+
+    <button type="submit">Leave comment</button>
+    
+</form>
+
 {% endblock %}

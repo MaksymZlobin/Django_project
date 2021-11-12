@@ -1,11 +1,9 @@
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
-from news.models import Article
+from django.urls import reverse
 
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+from news.models import Article, Comment
 
 
 def articles_list(request):
@@ -18,7 +16,23 @@ def articles_list(request):
 
 
 def article_detail(request, article_id):
-    article = get_object_or_404(Article, id=article_id)
-    return render(request, 'news/detail.html', {'article': article})
+    try:
+        article = Article.objects.get(id=article_id)
+    except Article.DoesNotExist:
+        return Http404('Article not found!')
 
+    latest_comments = article.comment_set.order_by('-id')[:10]
+
+    return render(request, 'news/detail.html', {'article': article, 'latest_comments': latest_comments})
+
+
+def leave_comment(request, article_id):
+    try:
+        article = Article.objects.get(id=article_id)
+    except Article.DoesNotExist:
+        return Http404('Article not found!')
+
+    article.comment_set.create(author_name=request.POST['name'], comment_text=request.POST['text'])
+
+    return HttpResponseRedirect(reverse('articles:article', args=(article.id,)))
 

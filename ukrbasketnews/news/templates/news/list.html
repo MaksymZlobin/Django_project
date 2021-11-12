@@ -7,7 +7,7 @@
     {% if articles_list %}
 
         {% for a in articles_list %}
-            <a href="{% url 'articles:article' a.id %}">{{a.title}}</a>
+            <li><a href="{% url 'articles:article' a.id %}">{{a.title}}</a></li>
         {% endfor %}
 
     {% else %}
