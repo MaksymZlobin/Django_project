@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.template import loader
 from news.models import Article
@@ -17,11 +17,8 @@ def articles_list(request):
     return HttpResponse(template.render(context, request))
 
 
-def article_detail(request, id):
-    try:
-        article = Article.objects.get(id=id)
-    except Article.DoesNotExist:
-        return HttpResponse('Such article does not exist!')
+def article_detail(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
     return render(request, 'news/detail.html', {'article': article})
 
 
