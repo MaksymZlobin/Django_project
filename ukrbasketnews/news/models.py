@@ -46,16 +46,24 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+    def __str__(self):
+        if self.first_name and self.last_name:
+            return f'{self.first_name} {self.last_name}'
+        return self.email
+
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     picture = models.FileField(blank=True)
     date = models.DateTimeField(blank=True, null=True, auto_now=True)
-    # author = models.ForeignKey('User', on_delete=models.CASCADE)
+    author = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return self.title
+        author = 'deleted user'
+        if self.author:
+            author = self.author
+        return f'Article "{self.title}" - by {author}'
 
     def published(self):
         self.date = timezone.now()

@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'text', 'date')
+    list_display = ('id', 'title', 'text', 'author', 'date')
 
 
 @admin.register(Comment)
