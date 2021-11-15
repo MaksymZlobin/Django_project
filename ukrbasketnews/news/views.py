@@ -16,14 +16,11 @@ def articles_list(request):
 
 
 def article_detail(request, article_id):
-    try:
-        article = Article.objects.get(id=article_id)
-    except Article.DoesNotExist:
-        return Http404('Article not found!')
-
-    latest_comments = article.comment_set.order_by('-id')[:10]
-
-    return render(request, 'news/detail.html', {'article': article, 'latest_comments': latest_comments})
+    article = Article.objects.filter(id=article_id).first()
+    if article:
+        latest_comments = article.comment_set.order_by('-id')[:10]
+        return render(request, 'news/detail.html', {'article': article, 'latest_comments': latest_comments})
+    return render(request, '404.html')
 
 
 def leave_comment(request, article_id):

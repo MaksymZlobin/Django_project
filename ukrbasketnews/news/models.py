@@ -7,7 +7,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     picture = models.FileField(blank=True)
-    date = models.DateTimeField(blank=True, null=True)
+    date = models.DateTimeField(blank=True, null=True, auto_now=True)
     # author = models.ForeignKey('User', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -24,4 +24,4 @@ class Comment(models.Model):
     comment_text = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.author_name
+        return f'Comment ID {self.pk} - article {self.article} (ID {self.article.id}) - by {self.author_name}'
