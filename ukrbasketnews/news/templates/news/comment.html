@@ -18,7 +18,7 @@ There are no comments yet! You can be first.
 
 <hr>
 
-    <form action="{% url 'articles:leave_comment' article.id %}" method="POST">
+    <form action="{% url 'news:leave_comment' article.id %}" method="POST">
 
         {% csrf_token %}
 

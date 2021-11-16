@@ -34,7 +34,7 @@ def leave_comment(request, article_id):
 
     article.comment_set.create(author_name=request.POST['name'], comment_text=request.POST['text'])
 
-    return HttpResponseRedirect(reverse('articles:article', args=(article.id,)))
+    return HttpResponseRedirect(reverse('news:article', args=(article.id,)))
 
 
 def create_article(request):
@@ -42,7 +42,7 @@ def create_article(request):
         form = ArticleForm(request.POST)
         if form.is_valid():
             new_article = form.save()
-            return redirect('articles:article', article_id=new_article.id)
+            return redirect('news:article', article_id=new_article.id)
     else:
         form = ArticleForm()
     return render(request, 'news/article_edit.html', {'form': form})
