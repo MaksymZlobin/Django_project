@@ -1,9 +1,12 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
 from django.urls import reverse
+from django.utils import timezone
+
 
 from news.models import Article, Comment
+from news.forms import ArticleForm
 
 
 def articles_list(request):
@@ -33,3 +36,13 @@ def leave_comment(request, article_id):
 
     return HttpResponseRedirect(reverse('articles:article', args=(article.id,)))
 
+
+def create_article(request):
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            new_article = form.save()
+            return redirect('articles:article', article_id=new_article.id)
+    else:
+        form = ArticleForm()
+    return render(request, 'news/article_edit.html', {'form': form})

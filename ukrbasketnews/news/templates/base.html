@@ -5,8 +5,16 @@
     <title>{% block title %}News{% endblock %}</title>
 </head>
 <body>
-
-  {% block content %}{% endblock %}
-
+    <div class="page-header">
+        <a href="{% url 'articles:create_article' %}"></a>
+    </div>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
 </body>
 </html>
