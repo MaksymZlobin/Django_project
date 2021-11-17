@@ -1,31 +1,8 @@
 {% extends 'base.html' %}
+
 {% block content %}
-
-<hr>
-
-{% if latest_comments %}
-
-    {% for c in latest_comments %}
-        <p>
-            <strong>{{c.author_name}}</strong>
-            <p>{{c.comment_text}}</p>
-        </p>
-    {% endfor %}
-
-{% else %}
-There are no comments yet! You can be first.
-{% endif %}
-
-<hr>
-
-    <form action="{% url 'news:leave_comment' article.id %}" method="POST">
-
-        {% csrf_token %}
-
-        <input type="text" required placeholder="Name" name="name"><br>
-        <textarea name="text" required="" placeholder="Comment text" cols="30" rows="10"></textarea><br>
-
-        <button type="submit">Leave comment</button>
-
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Create comment</button>
     </form>
 {% endblock %}

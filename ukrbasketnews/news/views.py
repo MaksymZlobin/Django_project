@@ -6,7 +6,7 @@ from django.utils import timezone
 
 
 from news.models import Article, Comment
-from news.forms import ArticleForm
+from news.forms import ArticleForm, CommentForm
 
 
 def articles_list(request):
@@ -26,15 +26,18 @@ def article_detail(request, article_id):
     return render(request, '404.html')
 
 
-def leave_comment(request, article_id):
-    try:
-        article = Article.objects.get(id=article_id)
-    except Article.DoesNotExist:
-        return Http404('Article not found!')
-
-    article.comment_set.create(author_name=request.POST['name'], comment_text=request.POST['text'])
-
-    return HttpResponseRedirect(reverse('news:article', args=(article.id,)))
+def create_comment(request, article_id):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.author_name = request.POST['name']
+            form.comment_text = request.POST['text']
+            form.save()
+            article = Article.objects.get(id=article_id)
+            return redirect('news:article', id=article.id)
+    else:
+        form = CommentForm()
+    return render(request, 'news/comment.html', {'form': form})
 
 
 def create_article(request):
