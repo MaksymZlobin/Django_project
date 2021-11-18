@@ -28,16 +28,12 @@ def article_detail(request, article_id):
 
 def create_comment(request, article_id):
     if request.method == 'POST':
-        form = CommentForm(request.POST)
+        data = request.POST.copy()
+        data['article'] = article_id
+        form = CommentForm(data)
         if form.is_valid():
-            form.author_name = request.POST['name']
-            form.comment_text = request.POST['text']
             form.save()
-            article = Article.objects.get(id=article_id)
-            return redirect('news:article', id=article.id)
-    else:
-        form = CommentForm()
-    return render(request, 'news/comment.html', {'form': form})
+            return redirect('news:article', article_id=article_id)
 
 
 def create_article(request):
