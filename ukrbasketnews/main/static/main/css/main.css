@@ -9,11 +9,9 @@ aside {
     padding: 2.5%;
     height: 100vh;
     color: #fff;
-    border-right: 5px solid #4d4d4d;
 }
 
 aside img {
-
     width: 350px;
     float: left;
 }
@@ -35,7 +33,7 @@ aside ul li {
     color: #fff;
     display: block;
     margin-top: 20px;
-    transition: all .6s ease;
+    transition: transform .6s ease;
 }
 
 aside ul li:hover, aside ul a:hover {
@@ -43,3 +41,14 @@ aside ul li:hover, aside ul a:hover {
     text-decoration: none;
     transform: scale(1.05);
 }
+
+main .features {
+    float: left;
+    color: #fff;
+    margin-top: 100px;
+    text-align: center;
+    width: 50%;
+}
+
+main .features h1 {font-size: 50 px;}
+main .features p {max-width: 400px; margin: 20px auto}
