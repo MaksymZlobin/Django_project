@@ -3,15 +3,20 @@
 {% block title %}Latest articles{% endblock %}
 
 {% block content %}
+    <div class="features">
+        <h1>Latest articles</h1>
 
-    {% if articles_list %}
+        {% if articles_list %}
 
-        {% for a in articles_list %}
-            <li><a href="{% url 'news:article' a.id %}">{{a.title}}</a></li>
-        {% endfor %}
+            {% for a in articles_list %}
+                <div class="alert alert-danger">
+                    <li><a href="{% url 'news:article' a.id %}">{{a.title}}</a></li>
 
-    {% else %}
-        Articles not found.
-    {% endif %}
+                </div>
+            {% endfor %}
 
+        {% else %}
+            Articles not found.
+        {% endif %}
+    </div>
 {% endblock %}
