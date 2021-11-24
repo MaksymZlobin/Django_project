@@ -4,12 +4,12 @@
 
 {% block content %}
     <div class="features">
-        <h1>Latest articles</h1>
+        <h1>LATEST ARTICLES</h1>
 
         {% if articles_list %}
 
             {% for a in articles_list %}
-                <div class="alert alert-danger">
+                <div class="alert alert-dark">
                     <li><a href="{% url 'news:article' a.id %}">{{a.title}}</a></li>
 
                 </div>

@@ -10,9 +10,13 @@ body .col-md-8 li {
 
 
 body h2 {
-    color: #eb5959;
+    color: #dc143c;
     margin-top: 20px;
     font-size: 30px;
+}
+
+body strong {
+    color: #ff1493
 }
 
 body p {
@@ -21,4 +25,14 @@ body p {
 
 body em {
     color: #ff00ff
+}
+
+body h1 {
+    color: #dc143c
+}
+
+body li {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 30px;
 }
