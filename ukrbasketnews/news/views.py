@@ -20,9 +20,12 @@ def articles_list(request):
 
 def article_detail(request, article_id):
     article = Article.objects.filter(id=article_id).first()
+    context = {'article': article}
     if article:
         latest_comments = article.comment_set.order_by('-id')[:10]
-        return render(request, 'news/detail.html', {'article': article, 'latest_comments': latest_comments})
+        comment_form = CommentForm()
+        context.update({'latest_comments': latest_comments, 'comment_form': comment_form})
+        return render(request, 'news/detail.html', context)
     return render(request, '404.html')
 
 

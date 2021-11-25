@@ -1,0 +1,38 @@
+body {
+    background: #2c2c2c;
+}
+
+body .col-md-8 li {
+    display: block;
+    margin-top: 20px;
+    transition: transform .6s ease;
+}
+
+
+body h2 {
+    color: #dc143c;
+    margin-top: 20px;
+    font-size: 30px;
+}
+
+body strong {
+    color: #ff1493
+}
+
+body p {
+    color: #fff
+}
+
+body em {
+    color: #ff00ff
+}
+
+body h1 {
+    color: #dc143c
+}
+
+body li {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 30px;
+}

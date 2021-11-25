@@ -27,14 +27,10 @@ There are no comments yet! You can be first.
 
 <hr>
 
-<form action="{% url 'news:create_comment' article.id %}" method="POST">
-
-    {% csrf_token %}
-
-    <input type="text" required placeholder="Name" name="name"><br>
-    <textarea name="text" required="" placeholder="Comment text" cols="30" rows="10"></textarea><br>
-
-    <button type="submit">Create comment</button>
+<form method="POST" class="post-form" action="{% url 'news:create_comment' article.id %}">{% csrf_token %}
+    <p>{{ comment_form.author_name.label }}:<br>{{ comment_form.author_name }}</p>
+    <p>{{ comment_form.comment_text.label }}:<br>{{ comment_form.comment_text }}</p>
+    <button type="submit" class="btn btn-danger">Create comment</button>
 </form>
 
 {% endblock %}
