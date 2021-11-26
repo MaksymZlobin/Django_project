@@ -1,9 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
-from django.urls import reverse
-from django.utils import timezone
-
 
 from news.models import Article, Comment
 from news.forms import ArticleForm, CommentForm
@@ -48,3 +45,11 @@ def create_article(request):
     else:
         form = ArticleForm()
     return render(request, 'news/article_edit.html', {'form': form})
+
+
+def main_page(request):
+    return render(request, 'news/main_page.html')
+
+
+def about(request):
+    return render(request, 'news/about.html')
