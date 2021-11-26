@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 </head>
-<body style="background-color: #fff8dc">
-<nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #deb887">
-    <a class="navbar-brand" href="#">
-        <img src="{% static 'main/img/logo.png' %}" alt="logo" width="150" height="115">
+<body style="background-color: #000000">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #00ffff">
+    <a class="navbar-brand" href="{% url 'news:main' %}">
+        <img src="{% static 'news/img/logo.png' %}" alt="logo" width="150" height="115">
     </a>
-    <a class="navbar-brand" href="{% url 'news:main' %}">UKRBASKETNEWS</a>
+    <a class="navbar-brand text-black" href="{% url 'news:main' %}">UKRBASKETNEWS</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -22,13 +22,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'news:main' %}"><i class="fas fa-home"></i> Main page</a>
+                <a class="nav-link text-black" href="{% url 'news:main' %}"><i class="fas fa-home"></i> Main page</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'news:articles' %}"><i class="far fa-newspaper"></i> Articles list</a>
+                <a class="nav-link text-black" href="{% url 'news:articles' %}"><i class="far fa-newspaper"></i> Articles list</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'news:about' %}"><i class="fas fa-info-circle"></i> About</a>
+                <a class="nav-link text-black" href="{% url 'news:about' %}"><i class="fas fa-info-circle"></i> About</a>
             </li>
         </ul>
     </div>

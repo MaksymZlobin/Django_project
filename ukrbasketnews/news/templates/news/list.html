@@ -3,18 +3,18 @@
 {% block title %}Latest articles{% endblock %}
 
 {% block content %}
-    <div class="features">
+    <div class="features" style="color:#fe019a">
         <h1>LATEST ARTICLES</h1>
 
         {% if articles_list %}
 
             {% for article in articles_list %}
-                <div class="card mb-3 border-dark" style="border-width:5px; background-color: #deb887">
+                <div class="card mb-3" style="border-width:5px; border-color:#00ffff; background-color:#00ffff">
                     <a class="card-block stretched-link text-decoration-none" href="{% url 'news:article' article.id %}">
                         <img src="{{article.picture.url}}" class="card-img-top" alt="picture">
                         <div class="card-body">
-                            <h5 class="card-title">{{article.title}}</h5>
-                            <p class="card-text">{{article.text|truncatechars:100}}</p>
+                            <h5 class="card-title" style="color:#fe019a">{{article.title}}</h5>
+                            <p class="card-text text-black">{{article.text|truncatechars:100}}</p>
                             <p class="card-text"><small class="text-muted">{{article.date}}</small></p>
                         </div>
                     </a>
