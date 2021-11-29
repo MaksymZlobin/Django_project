@@ -6,12 +6,14 @@
     <div class="features" style="color:#fe019a">
         <h1>LATEST ARTICLES</h1>
 
-        {% if articles_list %}
+        {% if object_list %}
 
-            {% for article in articles_list %}
+            {% for article in object_list %}
                 <div class="card mb-3" style="border-width:5px; border-color:#00ffff; background-color:#00ffff">
                     <a class="card-block stretched-link text-decoration-none" href="{% url 'news:article' article.id %}">
-                        <img src="{{article.picture.url}}" class="card-img-top" alt="picture">
+                        {% if article.picture %}
+                            <img src="{{article.picture.url}}" class="card-img-top" alt="picture">
+                        {% endif %}
                         <div class="card-body">
                             <h5 class="card-title" style="color:#fe019a">{{article.title}}</h5>
                             <p class="card-text text-black">{{article.text|truncatechars:100}}</p>

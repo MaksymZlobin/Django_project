@@ -9,8 +9,8 @@ class ArticleForm(ModelForm):
 
 
 class CommentForm(ModelForm):
-    comment_text = CharField(widget=Textarea, label='Enter comment text')
-    author_name = CharField(label='Enter your name')
+    comment_text = CharField(widget=Textarea, label='Enter comment text', max_length=200)
+    author_name = CharField(label='Enter your name', max_length=50)
 
     class Meta:
         model = Comment

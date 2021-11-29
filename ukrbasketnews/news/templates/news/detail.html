@@ -12,12 +12,12 @@
 
 <hr>
 
-{% if latest_comments %}
+{% if comments %}
 
-    {% for c in latest_comments %}
+    {% for comment in comments %}
         <p>
-            <strong style="color:#00ffff">{{c.author_name}}</strong>
-            <p style="color:#ffffff">{{c.comment_text}}</p>
+            <strong style="color:#00ffff">{{comment.author_name}}</strong>
+            <p style="color:#ffffff">{{comment.comment_text}}</p>
         </p>
     {% endfor %}
 
