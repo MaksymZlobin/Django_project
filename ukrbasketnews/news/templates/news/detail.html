@@ -4,9 +4,9 @@
 
 {% block content %}
 
-<h2 style="color:#fe019a">{{article.title}}</h2>
+<h2 style="color:#ff0000">{{article.title}}</h2>
 
-<p style="color:#ffffff">{{article.text}}</p>
+<p style="color:#000000">{{article.text}}</p>
 
 <em class="text-muted">{{article.date}}</em>
 
@@ -16,8 +16,8 @@
 
     {% for comment in comments %}
         <p>
-            <strong style="color:#00ffff">{{comment.author_name}}</strong>
-            <p style="color:#ffffff">{{comment.comment_text}}</p>
+            <strong style="color:#ff0000">{{comment.author_name}}</strong>
+            <p style="color:#000000">{{comment.comment_text}}</p>
         </p>
     {% endfor %}
 
@@ -28,9 +28,9 @@ There are no comments yet! You can be first.
 <hr>
 
 <form method="POST" class="post-form" action="{% url 'news:create_comment' article.id %}">{% csrf_token %}
-    <p style="color:#fe019a">{{ comment_form.author_name.label }}:<br>{{ comment_form.author_name }}</p>
-    <p style="color:#fe019a">{{ comment_form.comment_text.label }}:<br>{{ comment_form.comment_text }}</p>
-    <button type="submit" class="btn btn-info">Create comment</button>
+    <p class="text-muted">{{ comment_form.author_name.label }}:<br>{{ comment_form.author_name }}</p>
+    <p class="text-muted">{{ comment_form.comment_text.label }}:<br>{{ comment_form.comment_text }}</p>
+    <button type="submit" class="btn btn-danger">Create comment</button>
 </form>
 
 {% endblock %}
