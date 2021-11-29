@@ -9,7 +9,7 @@ urlpatterns = [
     path('articles/', views.ArticlesListView.as_view(), name='articles'),
     path('articles/<int:pk>/', views.ArticleDetailView.as_view(), name='article'),
     path('articles/<int:pk>/new-comment/', views.CreateCommentView.as_view(), name='create_comment'),
-    path('articles/new-article/', views.CreateArticleView.as_view(), name='create_article'),
+    path('articles/create-article/', views.CreateArticleView.as_view(), name='create_article'),
     path('page-not-found/', views.NotFoundView.as_view(), name='page_not_found'),
     path('bad-request/', views.BadRequestView.as_view(), name='bad_request'),
 ]
