@@ -15,3 +15,9 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = ['article', 'author_name', 'comment_text']
+
+
+class UserLoginForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['email', 'password']

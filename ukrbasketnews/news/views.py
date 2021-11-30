@@ -1,10 +1,11 @@
+from django.contrib.auth.views import LoginView
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, FormView
 
-from news.forms import ArticleForm, CommentForm
-from news.models import Article, Comment
+from news.forms import ArticleForm, CommentForm, UserLoginForm
+from news.models import Article, Comment, User
 
 
 class ArticlesListView(ListView):
@@ -60,6 +61,10 @@ class CreateArticleView(FormView):
         if form.is_valid():
             new_article = form.save()
             return redirect('news:article', pk=new_article.id)
+
+
+class UserLoginView(LoginView):
+    template_name = 'news/login.html'
 
 
 class MainView(TemplateView):

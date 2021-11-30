@@ -19,7 +19,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
                 <a class="nav-link text-black" href="{% url 'news:main' %}"><i class="fas fa-home"></i> Main page</a>
             </li>
@@ -32,6 +32,32 @@
             <li class="nav-item">
                 <a class="nav-link text-black" href="{% url 'news:about' %}"><i class="fas fa-info-circle"></i> About</a>
             </li>
+        </ul>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            {% if user.is_authenticated %}
+
+            <p>Hello, {{ user.email }}!</p>
+
+                <li class="nav-item">
+                    <a class="nav-link text-black" href=""><i class="fas fa-sign-in-alt"></i>
+                        Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-black" href="{% url 'news:logout' %}"><i class="fas fa-sign-in-alt"></i>
+                        Log-out</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <p class="nav-link text-black">Hello, guest!</p>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-black" href="{% url 'news:login' %}"><i class="fas fa-sign-in-alt"></i>
+                        Log-in</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-black" href=""><i class="fas fa-sign-in-alt"></i> Register</a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
