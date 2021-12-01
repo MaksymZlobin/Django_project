@@ -16,19 +16,19 @@
 
     {% for comment in comments %}
         <p>
-            <strong style="color:#ff0000">{{comment.author_name}}</strong>
+            <strong style="color:#ff0000">{{comment.author}}</strong>
             <p style="color:#000000">{{comment.comment_text}}</p>
         </p>
     {% endfor %}
 
 {% else %}
-There are no comments yet! You can be first.
+<p>There are no comments yet! You can be first.</p>
 {% endif %}
 
 <hr>
 
 <form method="POST" class="post-form" action="{% url 'news:create_comment' article.id %}">{% csrf_token %}
-    <p class="text-muted">{{ comment_form.author_name.label }}:<br>{{ comment_form.author_name }}</p>
+    <p class="text-muted">{{ comment_form.author.label }}:<br>{{ comment_form.author }}</p>
     <p class="text-muted">{{ comment_form.comment_text.label }}:<br>{{ comment_form.comment_text }}</p>
     <button type="submit" class="btn btn-danger">Create comment</button>
 </form>

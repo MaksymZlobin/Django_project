@@ -10,11 +10,10 @@ class ArticleForm(ModelForm):
 
 class CommentForm(ModelForm):
     comment_text = CharField(widget=Textarea, label='Enter comment text', max_length=200)
-    author_name = CharField(label='Enter your name', max_length=50)
 
     class Meta:
         model = Comment
-        fields = ['article', 'author_name', 'comment_text']
+        fields = ['article', 'author', 'comment_text']
 
 
 class UserLoginForm(ModelForm):
