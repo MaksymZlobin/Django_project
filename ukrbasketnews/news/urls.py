@@ -15,4 +15,5 @@ urlpatterns = [
     path('bad-request/', views.BadRequestView.as_view(), name='bad_request'),
     path('login/', views.UserLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('register/', views.RegisterView.as_view(), name='register'),
 ]

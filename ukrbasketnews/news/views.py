@@ -1,10 +1,11 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, FormView
 
-from news.forms import ArticleForm, CommentForm, UserLoginForm
+from news.forms import ArticleForm, CommentForm, UserLoginForm, RegistrationForm
 from news.models import Article, Comment, User
 
 
@@ -61,6 +62,17 @@ class CreateArticleView(FormView):
         if form.is_valid():
             new_article = form.save()
             return redirect('news:article', pk=new_article.id)
+
+
+class RegisterView(FormView):
+    template_name = 'news/register.html'
+    form_class = RegistrationForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            form.save()
+            return redirect('news:main')
 
 
 class UserLoginView(LoginView):

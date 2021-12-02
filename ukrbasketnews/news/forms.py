@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm, CharField, Textarea
 from news.models import Article, Comment, User
 
@@ -21,3 +22,9 @@ class UserLoginForm(ModelForm):
     class Meta:
         model = User
         fields = ['email', 'password']
+
+
+class RegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['email']
