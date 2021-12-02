@@ -26,9 +26,6 @@
                 <a class="nav-link text-black" href="{% url 'news:articles' %}"><i class="fas fa-newspaper"></i> Articles list</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-black" href="{% url 'news:create_article' %}"><i class="fas fa-plus-circle"></i> Create article</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link text-black" href="{% url 'news:about' %}"><i class="fas fa-info-circle"></i> About</a>
             </li>
         </ul>
@@ -36,6 +33,9 @@
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link text-black">Hello, {{ user.email }}!</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link text-black" href="{% url 'news:create_article' %}"><i class="fas fa-plus-circle"></i> Create article</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-black" href=""><i class="fas fa-address-card"></i> Profile</a>
