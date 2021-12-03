@@ -40,7 +40,7 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link text-black" href=""><i class="fas fa-address-card"></i> Profile</a>
+                    <a class="nav-link text-black" href="{% url 'news:profile' %}"><i class="fas fa-address-card"></i> Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-black" href="{% url 'news:logout' %}"><i class="fas fa-sign-out-alt"></i> Log-out</a>
@@ -64,14 +64,14 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                left
+
             </div>
             <div class="col-10">
                 {% block content %}
                 {% endblock %}
             </div>
             <div class="col-sm">
-                right
+
             </div>
         </div>
     </div>
