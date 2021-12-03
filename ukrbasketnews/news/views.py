@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.http import Http404
@@ -45,6 +46,8 @@ class CreateCommentView(CreateView):
         data = request.POST.copy()
         article_id = self.kwargs.get('pk')
         data['article'] = article_id
+        if request.user.is_authenticated:
+            data['author'] = request.user
         form = CommentForm(data)
         if form.is_valid():
             form.save()
@@ -71,7 +74,8 @@ class RegisterView(FormView):
     def post(self, request, *args, **kwargs):
         form = self.get_form()
         if form.is_valid():
-            form.save()
+            user = form.save()
+            login(request, user)
             return redirect('news:main')
 
 

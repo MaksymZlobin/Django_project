@@ -16,7 +16,7 @@
 
     {% for comment in comments %}
         <p>
-            <strong class="text-danger">{{comment_form.default_name}}</strong>
+            <strong class="text-danger">{% if comment.author %}{{ comment.author }}{% else %}Guest{% endif %}</strong>
             <p class="text-dark">{{comment.comment_text}}</p>
             <small class="text-muted">{{comment.date}}</small>
         </p>
@@ -32,7 +32,7 @@
     {% if user.is_authenticated %}
         <h5 class="text-danger">{{ user.email }}</h5>
     {% else %}
-        <h5 class="text-danger">{{ comment_form.default_name }}</h5>
+        <h5 class="text-danger">Guest</h5>
     {% endif %}
         <p class="text-muted">{{ comment_form.comment_text.label }}:<br>{{ comment_form.comment_text }}</p>
     <button type="submit" class="btn btn-danger">Create comment</button>

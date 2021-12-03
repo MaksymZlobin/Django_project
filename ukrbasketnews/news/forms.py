@@ -11,7 +11,6 @@ class ArticleForm(ModelForm):
 
 class CommentForm(ModelForm):
     comment_text = CharField(widget=Textarea, label='Enter comment text', max_length=200)
-    default_name = 'Guest'
 
     class Meta:
         model = Comment

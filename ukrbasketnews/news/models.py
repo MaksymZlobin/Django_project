@@ -39,6 +39,7 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     username = None
+    is_author = models.BooleanField(default=False)
 
     objects = UserManager()
 

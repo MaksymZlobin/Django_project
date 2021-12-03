@@ -34,9 +34,11 @@
                 <li class="nav-item">
                     <a class="nav-link text-black">Hello, {{ user.email }}!</a>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link text-black" href="{% url 'news:create_article' %}"><i class="fas fa-plus-circle"></i> Create article</a>
-                </li>
+                {% if user.is_author %}
+                    <li class="nav-item">
+                    <a class="nav-link text-black" href="{% url 'news:create_article' %}"><i class="fas fa-plus-circle"></i> Create article</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link text-black" href=""><i class="fas fa-address-card"></i> Profile</a>
                 </li>
