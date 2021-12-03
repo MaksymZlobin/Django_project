@@ -1,12 +1,11 @@
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
 from django.http import Http404
 from django.shortcuts import redirect
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, UpdateView
 from django.views.generic.edit import CreateView, FormView
 
-from news.forms import ArticleForm, CommentForm, UserLoginForm, RegistrationForm
+from news.forms import ArticleForm, CommentForm, UserLoginForm, RegistrationForm, ProfileForm
 from news.models import Article, Comment, User
 
 
@@ -77,6 +76,21 @@ class RegisterView(FormView):
             user = form.save()
             login(request, user)
             return redirect('news:main')
+
+
+class ProfileView(UpdateView):
+    template_name = 'news/profile.html'
+    form_class = ProfileForm
+    success_url = '/profile/'
+
+    def post(self, request, *args, **kwargs):
+        form = ProfileForm(data=request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('news:profile')
+
+    def get_object(self):
+        return self.request.user
 
 
 class UserLoginView(LoginView):
