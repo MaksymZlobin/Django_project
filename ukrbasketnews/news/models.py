@@ -39,6 +39,7 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     username = None
+    is_author = models.BooleanField(default=False)
 
     objects = UserManager()
 
@@ -71,8 +72,12 @@ class Article(models.Model):
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
-    author_name = models.CharField(max_length=50)
+    author = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, blank=True)
     comment_text = models.CharField(max_length=200)
+    date = models.DateTimeField(blank=True, null=True, auto_now_add=True)
 
     def __str__(self):
-        return f'Comment ID {self.pk} - article {self.article} (ID {self.article.id}) - by {self.author_name}'
+        author = 'Guest'
+        if self.author:
+            author = self.author
+        return f'Comment ID {self.pk} - article {self.article} (ID {self.article.id}) - by {author}'

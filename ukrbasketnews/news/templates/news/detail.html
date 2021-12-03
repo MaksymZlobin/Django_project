@@ -4,9 +4,9 @@
 
 {% block content %}
 
-<h2 style="color:#ff0000">{{article.title}}</h2>
+<h2 class="text-danger">{{article.title}}</h2>
 
-<p style="color:#000000">{{article.text}}</p>
+<p class="text-dark">{{article.text}}</p>
 
 <em class="text-muted">{{article.date}}</em>
 
@@ -16,20 +16,25 @@
 
     {% for comment in comments %}
         <p>
-            <strong style="color:#ff0000">{{comment.author_name}}</strong>
-            <p style="color:#000000">{{comment.comment_text}}</p>
+            <strong class="text-danger">{% if comment.author %}{{ comment.author }}{% else %}Guest{% endif %}</strong>
+            <p class="text-dark">{{comment.comment_text}}</p>
+            <small class="text-muted">{{comment.date}}</small>
         </p>
     {% endfor %}
 
 {% else %}
-There are no comments yet! You can be first.
+<p>There are no comments yet! You can be first.</p>
 {% endif %}
 
 <hr>
 
 <form method="POST" class="post-form" action="{% url 'news:create_comment' article.id %}">{% csrf_token %}
-    <p class="text-muted">{{ comment_form.author_name.label }}:<br>{{ comment_form.author_name }}</p>
-    <p class="text-muted">{{ comment_form.comment_text.label }}:<br>{{ comment_form.comment_text }}</p>
+    {% if user.is_authenticated %}
+        <h5 class="text-danger">{{ user.email }}</h5>
+    {% else %}
+        <h5 class="text-danger">Guest</h5>
+    {% endif %}
+        <p class="text-muted">{{ comment_form.comment_text.label }}:<br>{{ comment_form.comment_text }}</p>
     <button type="submit" class="btn btn-danger">Create comment</button>
 </form>
 

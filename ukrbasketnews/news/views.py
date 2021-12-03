@@ -1,10 +1,13 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, FormView
 
-from news.forms import ArticleForm, CommentForm
-from news.models import Article, Comment
+from news.forms import ArticleForm, CommentForm, UserLoginForm, RegistrationForm
+from news.models import Article, Comment, User
 
 
 class ArticlesListView(ListView):
@@ -43,6 +46,8 @@ class CreateCommentView(CreateView):
         data = request.POST.copy()
         article_id = self.kwargs.get('pk')
         data['article'] = article_id
+        if request.user.is_authenticated:
+            data['author'] = request.user
         form = CommentForm(data)
         if form.is_valid():
             form.save()
@@ -60,6 +65,22 @@ class CreateArticleView(FormView):
         if form.is_valid():
             new_article = form.save()
             return redirect('news:article', pk=new_article.id)
+
+
+class RegisterView(FormView):
+    template_name = 'news/register.html'
+    form_class = RegistrationForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('news:main')
+
+
+class UserLoginView(LoginView):
+    template_name = 'news/login.html'
 
 
 class MainView(TemplateView):

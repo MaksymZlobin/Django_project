@@ -11,7 +11,7 @@ class ArticleAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'article', 'author_name', 'comment_text')
+    list_display = ('id', 'article', 'author', 'comment_text')
 
 
 @admin.register(User)
@@ -19,6 +19,7 @@ class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name')}),
+        (_('Role'), {'fields': ('is_author', )}),
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
@@ -30,6 +31,6 @@ class UserAdmin(DjangoUserAdmin):
             'fields': ('email', 'password1', 'password2'),
         }),
     )
-    list_display = ('id', 'email', 'first_name', 'last_name', 'is_staff')
+    list_display = ('id', 'email', 'first_name', 'last_name', 'is_staff', 'is_author')
     search_fields = ('first_name', 'last_name', 'email')
     ordering = ('email', 'id',)
