@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.forms import ModelForm, CharField, Textarea
 from news.models import Article, Comment, User
 
@@ -6,7 +6,7 @@ from news.models import Article, Comment, User
 class ArticleForm(ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'text', 'picture', 'author']
+        fields = ['title', 'text', 'picture']
 
 
 class CommentForm(ModelForm):
@@ -29,7 +29,13 @@ class RegistrationForm(UserCreationForm):
         fields = ['email']
 
 
-class ProfileForm(UserChangeForm):
+class ProfileForm(ModelForm):
     class Meta:
         model = User
         fields = ['email', 'first_name', 'last_name']
+
+
+class PasswordChangingForm(PasswordChangeForm):
+    class Meta:
+        model = User
+        fields = ['old_password', 'new_password1', 'new_password2']

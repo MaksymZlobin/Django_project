@@ -6,6 +6,10 @@
 
 <h2 class="text-danger">{{article.title}}</h2>
 
+{% if article.picture %}
+<img src="{{article.picture.url}}" class="card-img-top" alt="picture">
+{% endif %}
+
 <p class="text-dark">{{article.text}}</p>
 
 <em class="text-muted">{{article.date}}</em>

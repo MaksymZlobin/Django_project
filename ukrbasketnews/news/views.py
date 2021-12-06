@@ -1,11 +1,11 @@
 from django.contrib.auth import login
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView, DetailView, UpdateView
 from django.views.generic.edit import CreateView, FormView
 
-from news.forms import ArticleForm, CommentForm, UserLoginForm, RegistrationForm, ProfileForm
+from news.forms import ArticleForm, CommentForm, UserLoginForm, RegistrationForm, ProfileForm, PasswordChangingForm
 from news.models import Article, Comment, User
 
 
@@ -54,16 +54,21 @@ class CreateCommentView(CreateView):
         return redirect('news:bad_request')
 
 
-class CreateArticleView(FormView):
+class CreateArticleView(CreateView):
+    model = Article
     template_name = 'news/article_edit.html'
     form_class = ArticleForm
-    success_url = '/articles/'
 
     def post(self, request, *args, **kwargs):
-        form = self.get_form()
+        if not request.user.is_authenticated or not request.user.is_author:
+            return redirect('news:forbidden')
+        data = request.POST.copy()
+        data['author'] = request.user
+        form = ArticleForm(data, request.FILES)
         if form.is_valid():
             new_article = form.save()
             return redirect('news:article', pk=new_article.id)
+        return redirect('news:bad_request')
 
 
 class RegisterView(FormView):
@@ -81,16 +86,26 @@ class RegisterView(FormView):
 class ProfileView(UpdateView):
     template_name = 'news/profile.html'
     form_class = ProfileForm
-    success_url = '/profile/'
+    queryset = User.objects.all()
 
     def post(self, request, *args, **kwargs):
         form = ProfileForm(data=request.POST, instance=request.user)
+        user_id = self.kwargs.get('pk')
         if form.is_valid():
             form.save()
-            return redirect('news:profile')
+            return redirect('news:profile', pk=user_id)
+        return redirect('news:bad_request')
 
-    def get_object(self):
-        return self.request.user
+    def get(self, request, *args, **kwargs):
+        if self.request.user.id == self.kwargs.get('pk'):
+            return super().get(request, *args, **kwargs)
+        return redirect('news:forbidden')
+
+
+class PasswordView(PasswordChangeView):
+    template_name = 'news/password_change.html'
+    form_class = PasswordChangingForm
+    success_url = '/profile/'
 
 
 class UserLoginView(LoginView):
@@ -111,3 +126,7 @@ class NotFoundView(TemplateView):
 
 class BadRequestView(TemplateView):
     template_name = 'bad_request.html'
+
+
+class ForbiddenView(TemplateView):
+    template_name = '403.html'
