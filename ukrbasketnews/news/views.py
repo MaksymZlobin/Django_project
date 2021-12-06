@@ -54,16 +54,21 @@ class CreateCommentView(CreateView):
         return redirect('news:bad_request')
 
 
-class CreateArticleView(FormView):
+class CreateArticleView(CreateView):
+    model = Article
     template_name = 'news/article_edit.html'
     form_class = ArticleForm
-    success_url = '/articles/'
 
     def post(self, request, *args, **kwargs):
-        form = self.get_form()
+        if not request.user.is_authenticated or not request.user.is_author:
+            return redirect('news:forbidden')
+        data = request.POST.copy()
+        data['author'] = request.user
+        form = ArticleForm(data, request.FILES)
         if form.is_valid():
             new_article = form.save()
             return redirect('news:article', pk=new_article.id)
+        return redirect('news:bad_request')
 
 
 class RegisterView(FormView):
