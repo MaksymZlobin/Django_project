@@ -5,7 +5,9 @@
 {% block content %}
     <h1 class="text-danger">New article</h1>
     <form method="POST" class="post-form text-muted" enctype="multipart/form-data">{% csrf_token %}
-        {{ form.as_p }}
+        <p>{{form.title.label}}:<br>{{form.title}}</p>
+        <p>{{form.text.label}}:<br>{{form.text}}</p>
+        <p>{{form.picture}}</p>
         <button type="submit" class="save btn btn-danger">Create article</button>
     </form>
 {% endblock %}

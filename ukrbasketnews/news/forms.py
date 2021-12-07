@@ -6,7 +6,7 @@ from news.models import Article, Comment, User
 class ArticleForm(ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'text', 'picture']
+        fields = ['title', 'text', 'picture', 'author']
 
 
 class CommentForm(ModelForm):
