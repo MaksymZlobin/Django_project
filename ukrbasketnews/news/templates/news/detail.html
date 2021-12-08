@@ -3,34 +3,33 @@
 {% block title %}{{article.title}}{% endblock %}
 
 {% block content %}
-
-<h2 class="text-danger">{{article.title}}</h2>
-
-{% if article.picture %}
-<img src="{{article.picture.url}}" class="card-img-top" alt="picture">
-{% endif %}
-
-<p class="text-dark">{{article.text}}</p>
-
-<em class="text-muted">{{article.date}}</em>
-
-<hr>
+<br>
+<h1 class="card-title text-danger" >{{article.title}}</h1>
+<br>
+<div class="card" style="width: 70rem; border-width:5px; border-color:#dc143c; background-color:#dc143c;">
+  <img class="card-img-top" src="{{article.picture.url}}" alt="picture">
+  <div class="card-body">
+    <p class="card-text text-dark">{{article.text}}</p>
+    <small class="text-warning">{{article.date}}</small>
+  </div>
+</div>
 
 {% if comments %}
 
     {% for comment in comments %}
-        <p>
-            <strong class="text-danger">{% if comment.author %}{{ comment.author }}{% else %}Guest{% endif %}</strong>
-            <p class="text-dark">{{comment.comment_text}}</p>
-            <small class="text-muted">{{comment.date}}</small>
-        </p>
+<br>
+        <div class="card" style="width: 70rem; border-width:10px; border-color:#ff6347; background-color:#ff6347;">
+            <strong class="text-warning">{% if comment.author %}{{ comment.author }}{% else %}Guest{% endif %}</strong>
+            <p>{{comment.comment_text}}</p>
+            <small class="footer text-warning">{{comment.date}}</small>
+        </div>
     {% endfor %}
 
 {% else %}
 <p>There are no comments yet! You can be first.</p>
 {% endif %}
 
-<hr>
+<br>
 
 <form method="POST" class="post-form" action="{% url 'news:create_comment' article.id %}">{% csrf_token %}
     {% if user.is_authenticated %}
