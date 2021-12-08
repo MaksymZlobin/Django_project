@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from news.models import Article, Comment, User
-from news.api.serializers import ArticleSerializer, ArticleDetailSerializer
+from news.api.serializers import ArticleSerializer, ArticleDetailSerializer, RegisterSerializer
 from news.api.permissions import IsAuthor
 from rest_framework.views import APIView
 
@@ -27,15 +27,22 @@ class ArticleDetailAPIView(RetrieveAPIView):
     lookup_url_kwarg = 'article_id'
 
 
-# class LoginView(APIView):
-#     queryset = User.objects.all()
-#     permission_classes = [AllowAny, ]
-#
-#     def post(self, request):
-#         email = request.data.get('email')
-#         password = request.data.get('password')
-#         user = authenticate(request, email=email, password=password)
-#         if user:
-#             login(request, user)
-#             return Response(status=status.HTTP_200_OK)
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
+class LoginView(APIView):
+    queryset = User.objects.all()
+    permission_classes = [AllowAny, ]
+
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+        user = authenticate(request, email=email, password=password)
+        if user:
+            login(request, user)
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class RegisterView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny, ]
+

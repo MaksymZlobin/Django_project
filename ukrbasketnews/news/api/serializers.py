@@ -32,3 +32,8 @@ class ArticleDetailSerializer(ArticleSerializer):
         model = Article
         fields = ArticleSerializer.Meta.fields + ['comments']
 
+
+class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'password']
