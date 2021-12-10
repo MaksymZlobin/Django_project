@@ -7,7 +7,9 @@
 <h1 class="card-title text-danger" >{{article.title}}</h1>
 <br>
 <div class="card" style="width: 70rem; border-width:5px; border-color:#dc143c; background-color:#dc143c;">
-  <img class="card-img-top" src="{{article.picture.url}}" alt="picture">
+    {% if article.picture %}
+        <img class="card-img-top" src="{{article.picture.url}}" alt="picture">
+    {% endif %}
   <div class="card-body">
     <p class="card-text text-dark">{{article.text}}</p>
     <small class="text-warning">{{article.date}}</small>
@@ -26,6 +28,7 @@
     {% endfor %}
 
 {% else %}
+<br>
 <p>There are no comments yet! You can be first.</p>
 {% endif %}
 

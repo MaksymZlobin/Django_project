@@ -8,17 +8,17 @@ from news.models import Article, Comment, User
 from news.api.serializers import ArticleSerializer, ArticleDetailSerializer, RegisterSerializer
 from news.api.permissions import IsAuthor
 from rest_framework.views import APIView
+from rest_framework_jwt.serializers import jwt_payload_handler
 
 
-class ArticlesListAPIView(ListCreateAPIView):
+class ArticlesListCreateAPIView(ListCreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
 
     def get_permissions(self):
-        if self.request.method == 'GET':
-            return [AllowAny(), ]
-        elif self.request.method == 'POST':
+        if self.request.method == 'POST':
             return [IsAuthor(), ]
+        return [AllowAny(), ]
 
 
 class ArticleDetailAPIView(RetrieveAPIView):
@@ -27,22 +27,14 @@ class ArticleDetailAPIView(RetrieveAPIView):
     lookup_url_kwarg = 'article_id'
 
 
-class LoginView(APIView):
-    queryset = User.objects.all()
+class CheckView(APIView):
     permission_classes = [AllowAny, ]
 
-    def post(self, request):
-        email = request.data.get('email')
-        password = request.data.get('password')
-        user = authenticate(request, email=email, password=password)
-        if user:
-            login(request, user)
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request):
+        return Response(data={'user_is_authenticated': request.user.is_authenticated}, status=status.HTTP_200_OK)
 
 
 class RegisterView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny, ]
-
