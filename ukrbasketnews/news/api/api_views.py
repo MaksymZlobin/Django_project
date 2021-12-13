@@ -7,9 +7,8 @@ from rest_framework.response import Response
 
 from news.models import Article, Comment, User
 from news.api.serializers import ArticleSerializer, ArticleDetailSerializer, RegisterSerializer
-from news.api.permissions import IsAuthor
+from news.api.permissions import IsAuthor, NotRegisterUser
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.views import APIView
 from rest_framework_jwt.serializers import jwt_payload_handler
 
@@ -40,7 +39,7 @@ class CheckView(APIView):
 class RegisterView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [AllowAny, ]
+    permission_classes = [NotRegisterUser, ]
 
 
 class LogOutView(APIView):
