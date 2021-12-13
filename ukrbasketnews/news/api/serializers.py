@@ -36,29 +36,22 @@ class ArticleDetailSerializer(ArticleSerializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    # email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
-    # first_name = serializers.CharField(max_length=50, required=True)
-    # last_name = serializers.CharField(max_length=50, required=True)
-    # password1 = serializers.CharField(required=True, write_only=True, validators=[validate_password])
-    # password2 = serializers.CharField(required=True, write_only=True)
+    password1 = serializers.CharField(required=True, write_only=True, validators=[validate_password])
+    password2 = serializers.CharField(required=True, write_only=True)
 
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'password']
+        fields = ['email', 'first_name', 'last_name', 'password1', 'password2']
 
-    # def validate(self, attrs):
-    #     if attrs['password1'] != attrs['password2']:
-    #         raise serializers.ValidationError({'password': "Password fields didn't match."})
-    #     return attrs
-    #
-    # def create(self, validated_data):
-    #     user = User.objects.create(
-    #         email=validated_data['email'],
-    #         first_name=validated_data['first_name'],
-    #         last_name=validated_data['last_name']
-    #     )
-    #
-    #     user.set_password(validated_data['password1'])
-    #     user.save()
-    #
-    #     return user
+    def validate(self, attrs):
+        if attrs['password1'] != attrs['password2']:
+            raise serializers.ValidationError({'password': "Password fields don't match."})
+        return attrs
+
+    def create(self, validated_data):
+        password = validated_data.pop('password1')
+        validated_data.pop('password2')
+        user = super().create(validated_data)
+        user.set_password(password)
+        user.save()
+        return user

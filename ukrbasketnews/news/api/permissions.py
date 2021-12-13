@@ -4,12 +4,10 @@ from rest_framework.permissions import BasePermission
 class IsAuthor(BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.is_authenticated and request.user.is_author:
-            return True
+        return request.user.is_authenticated and request.user.is_author
 
 
-class NotRegisterUser(BasePermission):
+class IsAnonymousUser(BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.is_authenticated:
-            return False
+        return not request.user.is_authenticated

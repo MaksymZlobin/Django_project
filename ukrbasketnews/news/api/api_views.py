@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView, CreateAPIView, get_object_or_404, ListCreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -7,7 +7,8 @@ from rest_framework.response import Response
 
 from news.models import Article, Comment, User
 from news.api.serializers import ArticleSerializer, ArticleDetailSerializer, RegisterSerializer
-from news.api.permissions import IsAuthor, NotRegisterUser
+from news.api.permissions import IsAuthor, IsAnonymousUser
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from rest_framework_jwt.serializers import jwt_payload_handler
@@ -39,7 +40,7 @@ class CheckView(APIView):
 class RegisterView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [NotRegisterUser, ]
+    permission_classes = [IsAnonymousUser, ]
 
 
 class LogOutView(APIView):
@@ -49,4 +50,9 @@ class LogOutView(APIView):
         refresh_token = request.data["refresh_token"]
         token = RefreshToken(refresh_token)
         token.blacklist()
-        return Response(status=status.HTTP_205_RESET_CONTENT)
+        user = request.user
+        logout(request)
+        OutstandingToken.objects.filter(user=user).update(expired_date=now)
+        return Response(status=status.HTTP_200_OK)
+
+
