@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from django.contrib.auth import login, authenticate
 from django.core import management
 from rest_framework import status, filters
 from rest_framework.generics import RetrieveAPIView, CreateAPIView, get_object_or_404, ListCreateAPIView
@@ -41,6 +43,14 @@ class RegisterView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [IsAnonymousUser, ]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = authenticate(email=request.POST.get('email'), password=request.POST.get('password'))
+        if user:
+            login(request, user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class LogOutView(APIView):
