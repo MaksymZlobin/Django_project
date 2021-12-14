@@ -1,22 +1,22 @@
-from django.contrib.auth import authenticate, login, logout
-from rest_framework import status
+from datetime import datetime
+from django.core import management
+from rest_framework import status, filters
 from rest_framework.generics import RetrieveAPIView, CreateAPIView, get_object_or_404, ListCreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-
-
-from news.models import Article, Comment, User
-from news.api.serializers import ArticleSerializer, ArticleDetailSerializer, RegisterSerializer
-from news.api.permissions import IsAuthor, IsAnonymousUser
-from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 from rest_framework.views import APIView
-from rest_framework_jwt.serializers import jwt_payload_handler
+
+from news.api.permissions import IsAuthor, IsAnonymousUser
+from news.api.serializers import ArticleSerializer, ArticleDetailSerializer, RegisterSerializer
+from news.models import Article, Comment, User
 
 
 class ArticlesListCreateAPIView(ListCreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['-date']
 
     def get_permissions(self):
         if self.request.method == 'POST':
@@ -47,12 +47,9 @@ class LogOutView(APIView):
     permission_classes = [IsAuthenticated, ]
 
     def post(self, request):
-        refresh_token = request.data["refresh_token"]
-        token = RefreshToken(refresh_token)
-        token.blacklist()
         user = request.user
-        logout(request)
-        OutstandingToken.objects.filter(user=user).update(expired_date=now)
-        return Response(status=status.HTTP_200_OK)
+        OutstandingToken.objects.filter(user=user).update(expires_at=datetime.now())
+        management.call_command('flushexpiredtokens')
+        return Response('success', status=status.HTTP_200_OK)
 
 
