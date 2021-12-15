@@ -56,20 +56,25 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-class ProfileSerializer(UserSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     email = serializers.CharField(required=False)
-    first_name = serializers.CharField(required=False)
-    last_name = serializers.CharField(required=False)
 
     class Meta:
         model = User
-        fields = UserSerializer.Meta.fields
+        fields = ['email', 'first_name', 'last_name']
 
 
 class PasswordChangeSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True, validators=[validate_password])
 
     class Meta:
         model = User
         fields = ['old_password', 'new_password']
+
+
+class CommentCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = ['article', 'author', 'comment_text']

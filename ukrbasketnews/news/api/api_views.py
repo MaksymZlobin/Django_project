@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 from rest_framework.views import APIView
 
-from news.api.permissions import IsAuthor, IsAnonymousUser
+from news.api.permissions import IsAuthor, IsAnonymousUser, IsCurrentUser
 from news.api.serializers import (
     ArticleSerializer,
     ArticleDetailSerializer,
@@ -23,6 +23,7 @@ from news.api.serializers import (
     UserSerializer,
     PasswordChangeSerializer,
     ProfileSerializer,
+    CommentCreateSerializer,
 )
 from news.models import Article, Comment, User
 
@@ -30,13 +31,22 @@ from news.models import Article, Comment, User
 class ArticlesListCreateAPIView(ListCreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    filter_backends = [filters.OrderingFilter]
-    ordering = ['-date']
+    # filter_backends = [filters.OrderingFilter]
+    # ordering = ['-date']
 
     def get_permissions(self):
         if self.request.method == 'POST':
             return [IsAuthor(), ]
         return [AllowAny(), ]
+
+    def get_queryset(self):
+        qs = self.queryset.all()
+        print(self.request.query_params)
+        email = self.request.query_params.get('author')
+        print(email)
+        if isinstance(email, int):
+            return qs.filter(author=email)
+        return qs.filter(author__email=email)
 
 
 class ArticleDetailAPIView(RetrieveAPIView):
@@ -73,19 +83,30 @@ class LogoutAPIView(APIView):
         user = request.user
         OutstandingToken.objects.filter(user=user).update(expires_at=datetime.now())
         management.call_command('flushexpiredtokens')
-        return Response('success', status=status.HTTP_200_OK)
+        return Response(data={'message': 'Success!'}, status=status.HTTP_200_OK)
 
 
-class CreateCommentAPIView(CreateAPIView):
+class CommentCreateAPIView(CreateAPIView):
     queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+    serializer_class = CommentCreateSerializer
     permission_classes = [AllowAny, ]
+
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+        if request.user.is_authenticated:
+            data['author'] = request.user
+        data['article'] = Article.objects.get(id=self.kwargs.get('article_id'))
+        serializer = self.get_serializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        return Response(data={'message': 'Fail!'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProfileAPIView(RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsCurrentUser, ]
     lookup_url_kwarg = 'user_id'
 
 
