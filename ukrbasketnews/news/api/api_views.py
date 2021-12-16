@@ -95,12 +95,12 @@ class CommentCreateAPIView(CreateAPIView):
         data = request.data.copy()
         if request.user.is_authenticated:
             data['author'] = request.user
-        data['article'] = Article.objects.get(id=self.kwargs.get('article_id'))
+        data['article'] = self.kwargs.get('article_id')
         serializer = self.get_serializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-        return Response(data={'message': 'Fail!'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProfileAPIView(RetrieveUpdateAPIView):
