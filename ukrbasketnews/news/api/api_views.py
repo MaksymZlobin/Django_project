@@ -94,7 +94,7 @@ class CommentCreateAPIView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
         if request.user.is_authenticated:
-            data['author'] = request.user
+            data['author'] = request.user.id
         data['article'] = self.kwargs.get('article_id')
         serializer = self.get_serializer(data=data)
         if serializer.is_valid():
