@@ -41,9 +41,7 @@ class ArticlesListCreateAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         qs = self.queryset.all()
-        print(self.request.query_params)
         email = self.request.query_params.get('author')
-        print(email)
         if isinstance(email, int):
             return qs.filter(author=email)
         return qs.filter(author__email=email)
